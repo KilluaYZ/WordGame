@@ -117,10 +117,10 @@ void update_max(vector<vector<char>> &board, int start_row, int start_col,
       }
     }
   }
-  // cout << "Available:" << endl;
-  // cout << "space num: " << space_num << endl;
-  // cout << start_row << " " << start_col << endl;
-  // cout << end_row << " " << end_col << endl;
+  cout << "Available:" << endl;
+  cout << "space num: " << space_num << endl;
+  cout << start_row << " " << start_col << endl;
+  cout << end_row << " " << end_col << endl;
   if (space_num > max_space_num) {
     max_space_num = space_num;
     max_start_row = start_row;
@@ -153,7 +153,6 @@ void placeWordInCrossword(vector<vector<char>> &board, string word) {
 }
 
 int main() {
-  // freopen("no_2.in", "r", stdin);
   struct timeval start, end;
   double mtime;
   gettimeofday(&start, NULL);

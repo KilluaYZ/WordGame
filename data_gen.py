@@ -22,6 +22,7 @@ class Line:
         self.content_conflict: list[bool] = [False for _ in range(self.length)]
         self.is_correct = is_correct
         self.fill_ratio = 0
+        self.has_star = False
 
 class BoardBuilder:
     def __init__(self, max_row: int, max_col: int, word: str):
@@ -151,6 +152,11 @@ class BoardBuilder:
                 choose_idx.append(idx)
         for idx in choose_idx:
             _line.content[idx] = self.word[idx]
+        if _line.has_star:
+            for i in range(_line.length):
+                if _line.content[i] == SPACE:
+                    _line.content[i] = ANY
+                    break
     
     def _update_map_with_c_line(self, _map:dict, _c_idx: int):
         _c_line = self.line_list_correct[_c_idx]
@@ -207,7 +213,7 @@ class BoardBuilder:
             self._fill_line_with_correct_ans(_c_line)
         
     
-    def _random_gen_line_correct(self, ratio: float) -> Line:
+    def _random_gen_line_correct(self, ratio: float, has_star = False) -> Line:
         # 生成正确的答案
         alloc_success = False 
         for _ in range(100):
@@ -217,6 +223,7 @@ class BoardBuilder:
             _line.is_correct = True
             _line.fill_ratio = ratio
             _line.length = len(self.word)
+            _line.has_star = has_star
             _line.content_conflict = [False for _ in range(_line.length)]
             # self._fill_line_with_correct_ans(_line, ratio)
             if(self._alloc_line(_line)):
@@ -228,8 +235,7 @@ class BoardBuilder:
     def random_gen_lines(self):
         # 决定要生成多少个Line
         # max_num = int(math.ceil(self.max_row * self.max_col / 6))
-        max_num = 9000
-        # max_num = 500
+        max_num = 10000
         min_num = int(max_num / 2)
         line_num = random.randint(min_num, max_num)
         
@@ -242,9 +248,6 @@ class BoardBuilder:
         for i in range(len(self.line_list)):
             self._fill_line_with_error_ans(self.line_list[i])
         
-        # self._random_gen_line_correct(.1)
-        self._random_gen_line_correct(.1)
-        self._random_gen_line_correct(.1)
         self._random_gen_line_correct(.1)
         self._random_gen_line_correct(.1)
         self._random_gen_line_correct(.1)
@@ -257,6 +260,13 @@ class BoardBuilder:
         self._random_gen_line_correct(.1)
         self._random_gen_line_correct(.1)
         self._random_gen_line_correct(.2)
+        self._random_gen_line_correct(.2)
+        self._random_gen_line_correct(.2)
+        self._random_gen_line_correct(.2)
+        self._random_gen_line_correct(.2)
+        self._random_gen_line_correct(.2)
+        self._random_gen_line_correct(.2)
+        self._random_gen_line_correct(.2)
         self._random_gen_line_correct(.3)
         self._random_gen_line_correct(.3)
         self._random_gen_line_correct(.3)
@@ -267,9 +277,18 @@ class BoardBuilder:
         self._random_gen_line_correct(.3)
         self._random_gen_line_correct(.3)
         self._random_gen_line_correct(.3)
-        self._random_gen_line_correct(.3)
-        # self._random_gen_line_correct(.1)
-        # self._random_gen_line_correct(.1)
+        self._random_gen_line_correct(.4)
+        self._random_gen_line_correct(.4)
+        self._random_gen_line_correct(.4)
+        self._random_gen_line_correct(.4)
+        self._random_gen_line_correct(.4)
+        self._random_gen_line_correct(.4)
+        self._random_gen_line_correct(.4)
+        self._random_gen_line_correct(.4)
+        self._random_gen_line_correct(.4)
+        self._random_gen_line_correct(.4)
+        self._random_gen_line_correct(.4)
+        self._random_gen_line_correct(.4)
         self._random_gen_line_correct(.4)
         self._random_gen_line_correct(.4)
         self._random_gen_line_correct(.4)
@@ -288,18 +307,9 @@ class BoardBuilder:
         self._random_gen_line_correct(.5)
         self._random_gen_line_correct(.5)
         self._random_gen_line_correct(.5)
-        self._random_gen_line_correct(.6)
-        self._random_gen_line_correct(.6)
-        self._random_gen_line_correct(.6)
-        self._random_gen_line_correct(.6)
-        self._random_gen_line_correct(.6)
-        self._random_gen_line_correct(.6)
-        self._random_gen_line_correct(.6)
-        self._random_gen_line_correct(.6)
-        self._random_gen_line_correct(.6)
-        self._random_gen_line_correct(.6)
-        # self._random_gen_line_correct(.3)
-        # self._random_gen_line_correct(.6)
+        self._random_gen_line_correct(.5)
+        self._random_gen_line_correct(.5)
+        self._random_gen_line_correct(.5)
         self._random_gen_line_correct(.8)
         self._fill_lines_with_correct_ans()
         
@@ -364,14 +374,14 @@ class BoardBuilder:
             print("")
 
 if __name__ == "__main__":
-    row = 900
-    col = 900
+    row = 1200
+    col = 1200
     # word = "supercalifragilisticexpialidocious"
-    # word = "pneumonoultramicroscopicsilicovolcanoconiosis"
-    word = "pneumonoultramicroscopicsilicovolcanoconiosispneumonoultramicroscopicsilicovolcanoconiosis"
+    word = "pneumonoultramicroscopicsilicovolcanoconiosis"
+    # word = "pneumonoultramicroscopicsilicovolcanoconiosispneumonoultramicroscopicsilicovolcanoconiosis"
     # word = "antidisestablishmentarianism"
     # word = "information"
-    # word = "iloverucandschoolofinfomation"
+    # word = "iloverucandschoolofinfomationverymuch"
     bb = BoardBuilder(row, col, word)
     bb.gen_board()
     print(f"{row} {col}")
